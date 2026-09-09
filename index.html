@@ -57,8 +57,6 @@
   .wordmark { display: inline-flex; align-items: baseline; gap: 10px; color: #fff; text-decoration: none; }
   .wordmark b { font-family: var(--serif); font-weight: 700; font-size: 20px; letter-spacing: -.02em; }
   .wordmark span { color: #8b93ab; font-size: 12.5px; }
-  .masthead nav a { color: var(--on-navy); font-size: 14px; font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(195,203,220,.35); padding-bottom: 2px; }
-  .masthead nav a:hover { color: #fff; border-color: #fff; }
 
   /* ---------- stage: navy pitch + player straddling the seam ---------- */
   .stage { background: linear-gradient(to bottom, var(--navy) 0 calc(100% - 130px), var(--bg) calc(100% - 130px) 100%); }
@@ -152,19 +150,8 @@
   .promises span { color: var(--on-navy); max-width: 40em; }
 
   /* ---------- next steps ---------- */
-  .steps { margin: 0 0 36px; padding: 0; list-style: none; display: grid; gap: 20px; max-width: 44em; }
+  .steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 20px; max-width: 44em; }
   .steps li { padding-left: 20px; border-left: 2px solid var(--violet); }
-  .cta {
-    display: inline-block;
-    padding: 15px 26px;
-    border-radius: 10px;
-    background: var(--violet);
-    color: #fff;
-    font-weight: 700;
-    text-decoration: none;
-  }
-  .cta:hover { background: #4a3ad0; }
-  .cta-note { margin: 14px 0 0; color: var(--muted); font-size: 14px; }
 
   /* ---------- footer ---------- */
   footer { padding-block: 40px 56px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; }
@@ -181,7 +168,6 @@
 <header class="masthead">
   <div class="wrap">
     <a class="wordmark" href="./"><b>문항서재</b><span>수학 콘텐츠 관리</span></a>
-    <nav><a href="design.html">기술·데이터 설계 설명서</a></nav>
   </div>
 </header>
 
@@ -297,8 +283,6 @@
       <li>미팅에서는 이 화면에 대표님 문항을 직접 입력해 보시고, 저장한 뒤 다시 검색해서 고치는 과정까지 보여드리겠습니다.</li>
       <li>확정된 분류 기준과 표시 형식을 정리해 60일 일정의 주차별 검수 시점을 함께 맞추겠습니다.</li>
     </ol>
-    <a class="cta" href="design.html">기술·데이터 설계 설명서 보기</a>
-    <p class="cta-note">문항을 어떤 구조로 저장하고, 저장본과 변경 이력을 어떻게 보호하는지 정리한 문서입니다.</p>
   </div>
 </section>
 
