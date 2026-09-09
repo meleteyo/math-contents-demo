@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>문항서재 · 수학 문항 관리 사전 데모</title>
+<meta name="description" content="수학 문항을 작성하고 분류하고 다시 찾아 쓰는 화면을 1분 44초 영상으로 확인하실 수 있습니다. 위시켓 프로젝트 지원 단계에서 제작한 사전 데모입니다.">
+<meta property="og:title" content="문항서재 · 수학 문항 관리 사전 데모">
+<meta property="og:description" content="제안서에 적은 기능이 이미 화면에서 동작합니다. 1분 44초 데모 영상.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/poster.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root {
+    --navy: #101a34;
+    --ink: #172033;
+    --muted: #5f6b7d;
+    --line: #dce2ec;
+    --paper: #ffffff;
+    --bg: #f5f7fb;
+    --violet: #5b4be0;
+    --violet-soft: #eeebff;
+    --on-navy: #c3cbdc;
+    --sans: Pretendard, "Pretendard Variable", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+    --serif: "Noto Serif KR", AppleMyungjo, Batang, "Noto Serif", serif;
+    --page: 1180px;
+    --gut: clamp(20px, 5vw, 40px);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.75;
+    word-break: keep-all;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--violet); }
+  button { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; border-radius: 3px; }
+
+  .skip { position: fixed; z-index: 90; top: -100px; left: 16px; padding: 10px 15px; border-radius: 0 0 8px 8px; background: var(--violet); color: #fff; text-decoration: none; }
+  .skip:focus { top: 0; }
+
+  .wrap { width: 100%; max-width: var(--page); margin: 0 auto; padding-inline: var(--gut); }
+
+  /* ---------- masthead ---------- */
+  .masthead { background: var(--navy); }
+  .masthead .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 68px; }
+  .wordmark { display: inline-flex; align-items: baseline; gap: 10px; color: #fff; text-decoration: none; }
+  .wordmark b { font-family: var(--serif); font-weight: 700; font-size: 20px; letter-spacing: -.02em; }
+  .wordmark span { color: #8b93ab; font-size: 12.5px; }
+  .masthead nav a { color: var(--on-navy); font-size: 14px; font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(195,203,220,.35); padding-bottom: 2px; }
+  .masthead nav a:hover { color: #fff; border-color: #fff; }
+
+  /* ---------- stage: navy pitch + player straddling the seam ---------- */
+  .stage { background: linear-gradient(to bottom, var(--navy) 0 calc(100% - 130px), var(--bg) calc(100% - 130px) 100%); }
+  .stage .wrap { padding-top: clamp(48px, 7vw, 84px); padding-bottom: 0; }
+  .pitch { max-width: 760px; }
+  .pitch h1 {
+    margin: 0 0 20px;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(32px, 5.2vw, 58px);
+    line-height: 1.26;
+    letter-spacing: -.035em;
+    max-width: 12em;
+    color: #fff;
+  }
+  .pitch p { margin: 0; max-width: 30em; color: var(--on-navy); font-size: clamp(15.5px, 1.7vw, 18px); }
+  .player { margin-top: clamp(34px, 5vw, 54px); }
+  .player video {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1600 / 1080;
+    background: var(--navy);
+    border-radius: 14px;
+    box-shadow: 0 26px 70px rgba(16, 26, 52, .38);
+  }
+  .player figcaption { margin: 14px 2px 0; color: var(--muted); font-size: 13.5px; }
+  .player figcaption a { color: var(--muted); }
+
+  /* ---------- shared section rhythm ---------- */
+  .band { padding-block: clamp(56px, 8vw, 92px); }
+  .band + .band { border-top: 1px solid var(--line); }
+  .band h2 {
+    margin: 0 0 12px;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(23px, 3.1vw, 33px);
+    line-height: 1.42;
+    letter-spacing: -.03em;
+  }
+  .band .lead { margin: 0 0 clamp(28px, 4vw, 40px); max-width: 38em; color: var(--muted); }
+
+  /* ---------- chapter index ---------- */
+  .chapters { list-style: none; margin: 0; padding: 0; display: grid; }
+  @media (min-width: 900px) {
+    .chapters { grid-auto-flow: column; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(10, auto); column-gap: 34px; }
+  }
+  .chapter {
+    display: grid;
+    grid-template-columns: 4.4em 1fr;
+    gap: 4px 14px;
+    width: 100%;
+    padding: 13px 12px 14px;
+    border: 0;
+    border-top: 1px solid var(--line);
+    border-radius: 0;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+  }
+  .chapter time {
+    grid-row: span 2;
+    color: var(--violet);
+    font-size: 14px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    padding-top: 1px;
+  }
+  .chapter b { font-weight: 700; font-size: 15.5px; line-height: 1.5; letter-spacing: -.01em; }
+  .chapter small { color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .chapter:hover { background: var(--violet-soft); }
+  .chapter[aria-current="true"] { background: var(--navy); border-top-color: var(--navy); }
+  .chapter[aria-current="true"] time { color: #9d92ff; }
+  .chapter[aria-current="true"] b { color: #fff; }
+  .chapter[aria-current="true"] small { color: var(--on-navy); }
+
+  /* ---------- what the demo shows ---------- */
+  .points { margin: 0; display: grid; gap: 30px 46px; }
+  @media (min-width: 780px) { .points { grid-template-columns: 1fr 1fr; } }
+  .points dt { font-family: var(--serif); font-weight: 700; font-size: 18px; line-height: 1.5; letter-spacing: -.02em; }
+  .points dd { margin: 5px 0 0; max-width: 30em; color: var(--muted); }
+
+  /* ---------- commitments ---------- */
+  .terms { background: var(--navy); color: #fff; }
+  .terms h2 { color: #fff; }
+  .terms .lead { color: var(--on-navy); }
+  .promises { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  .promises li { padding: 20px 0; border-top: 1px solid rgba(195,203,220,.2); display: grid; gap: 4px 30px; }
+  @media (min-width: 780px) { .promises li { grid-template-columns: 15em 1fr; } }
+  .promises li:last-child { border-bottom: 1px solid rgba(195,203,220,.2); }
+  .promises b { font-family: var(--serif); font-weight: 600; font-size: 17px; letter-spacing: -.02em; }
+  .promises span { color: var(--on-navy); max-width: 40em; }
+
+  /* ---------- next steps ---------- */
+  .steps { margin: 0 0 36px; padding: 0; list-style: none; display: grid; gap: 20px; max-width: 44em; }
+  .steps li { padding-left: 20px; border-left: 2px solid var(--violet); }
+  .cta {
+    display: inline-block;
+    padding: 15px 26px;
+    border-radius: 10px;
+    background: var(--violet);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .cta:hover { background: #4a3ad0; }
+  .cta-note { margin: 14px 0 0; color: var(--muted); font-size: 14px; }
+
+  /* ---------- footer ---------- */
+  footer { padding-block: 40px 56px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13.5px; }
+  footer p { margin: 0 0 6px; max-width: 46em; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#demo">데모 영상으로 이동</a>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="wordmark" href="./"><b>문항서재</b><span>수학 콘텐츠 관리</span></a>
+    <nav><a href="design.html">기술·데이터 설계 설명서</a></nav>
+  </div>
+</header>
+
+<section class="stage">
+  <div class="wrap">
+    <div class="pitch">
+      <h1>제안서에 적은 기능이 이미 화면에서 동작합니다</h1>
+      <p>한글 파일에 흩어져 있던 수학 문항을 한곳에서 작성하고, 분류하고, 다시 찾아 쓰는 화면입니다. 소리 없이 자막으로 진행되며 1분 44초입니다.</p>
+    </div>
+    <figure class="player">
+      <video id="demo" controls preload="metadata" playsinline poster="assets/poster.jpg">
+        <source src="assets/math-contents-demo.mp4" type="video/mp4">
+        이 브라우저에서는 영상이 재생되지 않습니다. <a href="assets/math-contents-demo.mp4">영상 파일을 내려받아 보실 수 있습니다.</a>
+      </video>
+      <figcaption>실제로 동작하는 웹 화면을 조작하며 촬영했습니다. <a href="assets/math-contents-demo.mp4" download>영상 파일 내려받기</a></figcaption>
+    </figure>
+  </div>
+</section>
+
+<main id="main">
+
+<section class="band">
+  <div class="wrap">
+    <h2>영상에서 보시는 순서</h2>
+    <p class="lead">제목을 누르면 영상의 해당 장면에서 바로 재생됩니다.</p>
+    <ol class="chapters">
+      <li><button class="chapter" type="button" data-time="4"><time datetime="PT4S">0:04</time><b>관리자 로그인</b><small>임시 데모 계정으로 로그인하고 문항 보관함을 엽니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="12"><time datetime="PT12S">0:12</time><b>검색어 입력 → 결과 확인</b><small>본문 검색으로 관련 문항만 모아 봅니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="17"><time datetime="PT17S">0:17</time><b>문항 클릭 → 상세 보기</b><small>문항을 눌러 본문·그림·선택지를 확인합니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="22"><time datetime="PT22S">0:22</time><b>수정 버튼 → 편집 화면</b><small>본문과 학생 화면 미리보기를 함께 확인하며 편집합니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="28"><time datetime="PT28S">0:28</time><b>수식 버튼 → 입력 창</b><small>분수·루트·지수 등 자주 쓰는 수식을 버튼으로 고릅니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="32"><time datetime="PT32S">0:32</time><b>분수 버튼 → 수식 틀 생성</b><small>버튼을 누르면 분자와 분모를 입력할 수 있는 틀이 생깁니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="36"><time datetime="PT36S">0:36</time><b>수식 원본 편집 열기</b><small>수식 입력과 원본 편집을 함께 지원합니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="39"><time datetime="PT39S">0:39</time><b>수식 입력 → 미리보기 변화</b><small>입력한 분수와 지수가 실제 수식 모양으로 표시됩니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="45"><time datetime="PT45S">0:45</time><b>적용 버튼 → 문항에 수식 삽입</b><small>수식을 적용하면 본문과 오른쪽 미리보기가 함께 바뀝니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="50"><time datetime="PT50S">0:50</time><b>작도 버튼 → 그래프 편집기</b><small>기본 도형과 함수 그래프를 작성하는 도구를 엽니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="54"><time datetime="PT54S">0:54</time><b>함수 추가 → 그래프 생성</b><small>함수 버튼을 누르면 좌표평면에 그래프가 나타납니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="58"><time datetime="PT58S">0:58</time><b>계수 변경 → 곡선 이동</b><small>숫자를 바꾸면 함수식과 그래프가 바로 달라집니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="65"><time datetime="PT65S">1:05</time><b>삽입 버튼 → 문항 미리보기</b><small>작성한 그래프를 문항 본문에 삽입합니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="70"><time datetime="PT70S">1:10</time><b>저장 버튼 → 저장 완료</b><small>수식과 그래프를 포함한 편집 내용을 저장합니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="76"><time datetime="PT76S">1:16</time><b>메뉴 클릭 → 분류·태그 관리</b><small>과목부터 소분류까지 문항을 체계적으로 정리합니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="80"><time datetime="PT80S">1:20</time><b>메뉴 클릭 → 표시 설정</b><small>전체 문항에 적용할 글꼴과 배치를 한곳에서 관리합니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="84"><time datetime="PT84S">1:24</time><b>표시 옵션 변경 → 미리보기 변화</b><small>선택지 배치를 바꾸면 오른쪽 샘플에서 바로 확인할 수 있습니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="90"><time datetime="PT90S">1:30</time><b>백업 탭 클릭 → 데이터 관리</b><small>콘텐츠 내보내기와 백업 상태를 확인합니다.</small></button></li>
+      <li><button class="chapter" type="button" data-time="94"><time datetime="PT94S">1:34</time><b>이미지 보관함 → 그림 재사용</b><small>직접 작도가 어려운 복잡한 그래프는 이미지로 관리할 수 있습니다.</small></button></li>
+    </ol>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2>이 데모에서 확인하실 수 있는 것</h2>
+    <p class="lead">공고에 적으신 요구사항 중 판단이 가장 어려운 부분부터 먼저 만들어 확인했습니다.</p>
+    <dl class="points">
+      <div>
+        <dt>버튼으로 넣는 수식</dt>
+        <dd>분수, 루트, 지수, 첨자, 적분처럼 자주 쓰는 표기를 버튼으로 고르고 빈칸을 채웁니다. 복잡한 표기법을 외우지 않아도 됩니다.</dd>
+      </div>
+      <div>
+        <dt>나중에 다시 고칠 수 있는 수식</dt>
+        <dd>수식을 그림으로 굳혀 저장하지 않고 입력한 내용을 함께 보관합니다. 문항을 다시 열어 숫자만 바꿔 변형 문제를 만들 수 있습니다.</dd>
+      </div>
+      <div>
+        <dt>직접 그리는 그래프와 도형</dt>
+        <dd>좌표평면, 일차·이차함수, 점, 선분, 삼각형, 원을 시스템 안에서 만듭니다. 계수를 바꾸면 곡선이 바로 움직입니다.</dd>
+      </div>
+      <div>
+        <dt>4단계 분류와 본문 검색</dt>
+        <dd>과목·대분류·중분류·소분류에 태그와 난이도를 더해 정리하고, 문제 내용으로 찾아 기존 문항을 복사해 씁니다.</dd>
+      </div>
+      <div>
+        <dt>전체 문항에 한 번에 적용되는 표시 설정</dt>
+        <dd>글꼴, 글자 크기, 줄 간격, 선택지 배치를 설정 화면에서 바꾸면 이미 저장된 문항 전체에 적용됩니다. 문항마다 고칠 필요가 없습니다.</dd>
+      </div>
+      <div>
+        <dt>데이터 내보내기와 백업</dt>
+        <dd>문항 데이터와 원본 이미지를 통째로 내려받습니다. 특정 개발사만 열 수 있는 형식이 아닙니다.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<section class="band terms">
+  <div class="wrap">
+    <h2>개발이 끝난 뒤에도 대표님 것입니다</h2>
+    <p class="lead">이 프로젝트에서 지키겠다고 말씀드린 조건입니다.</p>
+    <ul class="promises">
+      <li>
+        <b>60일 안에 완료</b>
+        <span>공고의 90일 일정을 60일로 제안드립니다. 실제 문항 샘플로 수식과 작도 방식을 확인하는 과정, 백업 복원 시험, 대표님의 최종 사용 검수는 줄이지 않습니다.</span>
+      </li>
+      <li>
+        <b>2~3주차부터 직접 사용</b>
+        <span>완성될 때까지 기다리지 않으셔도 됩니다. 문항 작성과 수식 입력부터 동작하는 상태로 열어 드리고, 매주 의견을 반영합니다.</span>
+      </li>
+      <li>
+        <b>서버와 데이터는 고객 명의</b>
+        <span>서버, 데이터베이스, 파일 저장 공간, 도메인을 대표님 명의로 개설합니다. 전체 소스코드와 문항 데이터, 원본 이미지, 운영 문서를 인도합니다.</span>
+      </li>
+      <li>
+        <b>오픈 후 2개월 무상 유지보수</b>
+        <span>실제로 쓰시면서 나오는 저장 오류, 검색 오류, 화면 깨짐, 브라우저 호환 문제를 무상으로 고칩니다.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <h2>다음은 이렇게 진행하고 싶습니다</h2>
+    <ol class="steps">
+      <li>지금 작성 중이신 대표 문항 10~20개를 함께 보고 싶습니다. 가장 복잡한 수식과 그림이 무엇인지 확인하면, 시스템에서 직접 작도할 범위와 이미지로 올릴 범위를 첫 주에 정할 수 있습니다.</li>
+      <li>미팅에서는 이 화면에 대표님 문항을 직접 입력해 보시고, 저장한 뒤 다시 검색해서 고치는 과정까지 보여드리겠습니다.</li>
+      <li>확정된 분류 기준과 표시 형식을 정리해 60일 일정의 주차별 검수 시점을 함께 맞추겠습니다.</li>
+    </ol>
+    <a class="cta" href="design.html">기술·데이터 설계 설명서 보기</a>
+    <p class="cta-note">문항을 어떤 구조로 저장하고, 저장본과 변경 이력을 어떻게 보호하는지 정리한 문서입니다.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>영상에는 개발용 예제 문항과 임시 데모 계정만 사용했습니다. 실제 고객 데이터와 서버 주소는 들어 있지 않습니다.</p>
+    <p>문항서재 · 수학 콘텐츠 관리 시스템 사전 데모 · 2026년 9월</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var video = document.getElementById('demo');
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('.chapter'));
+  if (!video || !buttons.length) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  buttons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var seconds = Number(button.dataset.time);
+      var jump = function () {
+        video.currentTime = seconds;
+        var played = video.play();
+        if (played && played.catch) played.catch(function () {});
+      };
+      if (video.readyState > 0) jump();
+      else video.addEventListener('loadedmetadata', jump, { once: true });
+      video.scrollIntoView({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+    });
+  });
+
+  var current = null;
+  video.addEventListener('timeupdate', function () {
+    var active = null;
+    for (var i = 0; i < buttons.length; i++) {
+      if (Number(buttons[i].dataset.time) <= video.currentTime) active = buttons[i];
+    }
+    if (active === current) return;
+    if (current) current.removeAttribute('aria-current');
+    if (active) active.setAttribute('aria-current', 'true');
+    current = active;
+  });
+})();
+</script>
+</body>
+</html>
